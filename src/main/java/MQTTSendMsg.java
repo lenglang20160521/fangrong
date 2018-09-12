@@ -83,11 +83,8 @@ public class MQTTSendMsg {
 //        获取某个站下所有测量点的名称
         List<Integer> stationsIds = HttpClientUtil.getStationIds(newToken);
         for (Integer stationId : stationsIds) {
-            System.out.println("-------------------" + stationId.toString() + "--------------------------------");
-//                  获取id--name map
-//            Map<Integer,String> anaPointIdNameMaps = getIdNameMaps(stationId,newToken);
+//            System.out.println("-------------------" + stationId.toString() + "--------------------------------");
             Map<Integer, String> anaPointIdShortNameMaps = HttpClientUtil.getIdShortNameMaps(stationId, newToken);
-//            Map<Integer,String> anaPointIdAliasNameMaps = getIdAliasNameMaps(stationId,newToken);
             resultPoints resultPoints = HttpClientUtil.getResultPoints(stationId, newToken);
             resultPoints.setAnaPointIdShortNameMaps(anaPointIdShortNameMaps);
             resultPoints.createJsonMsgs();
