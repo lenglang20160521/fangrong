@@ -33,13 +33,13 @@ public class SendMsg implements Job {
         System.out.println("send => " + msg);
     }
 
-    public  static void sendTask(){
+    public  static void sendTask(MqttClient mqttClient){
         //        获取新的Token
         String newToken = HttpClientUtil.getNewToken();
 //        获取权限内的所有站
         Stations stations = HttpClientUtil.getStations(newToken);
         List<Integer> stationsIds = stations.getStationIds();
-        MqttClient mqttClient = MqttClientUtil.getMqttClient();
+//        MqttClient mqttClient = MqttClientUtil.getMqttClient();
         for (Integer stationId : stationsIds) {
 //            System.out.println("-------------------" + stationId.toString() + "--------------------------------");
             Map<Integer, String> anaPointIdShortNameMaps = HttpClientUtil.getIdShortNameMaps(stationId, newToken);
@@ -66,12 +66,13 @@ public class SendMsg implements Job {
     }
 
     @Override
-    public void execute(JobExecutionContext arg0) throws JobExecutionException {
-        System.out.println("******************************************");
-        sendTask();
+    public void execute(JobExecutionContext context) throws JobExecutionException {
+        MqttClient mqttClient =(MqttClient)context.getJobDetail().getJobDataMap().get("mqttClient");
+        sendTask(mqttClient);
     }
 
     public static void main(String[] args){
-     sendTask();
+        MqttClient mqttClient = MqttClientUtil.getMqttClient();
+        sendTask(mqttClient);
 }
 }

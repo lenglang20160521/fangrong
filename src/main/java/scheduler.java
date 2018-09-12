@@ -1,3 +1,4 @@
+import org.eclipse.paho.client.mqttv3.MqttClient;
 import org.quartz.*;
 import org.quartz.impl.StdSchedulerFactory;
 
@@ -21,14 +22,16 @@ public class scheduler {
                     .withIdentity("ramTrigger", "ramTriggerGroup")
                     //.withSchedule(SimpleScheduleBuilder.simpleSchedule())
                     .startAt(statTime)  //默认当前时间启动
-                    .withSchedule(CronScheduleBuilder.cronSchedule("0/2 * * * * ?")) //两秒执行一次
+                    .withSchedule(CronScheduleBuilder.cronSchedule("0/20 * * * * ?")) //30秒执行一次
                     .build();
             //4、定义一个JobDetail
             JobDetail job = JobBuilder.newJob(SendMsg.class) //定义Job类为HelloQuartz类，这是真正的执行逻辑所在
                     .withIdentity("job1", "group1") //定义name/group
                     .usingJobData("name", "quartz") //定义属性
                     .build();
-
+//            传参
+            MqttClient mqttClient = MqttClientUtil.getMqttClient();
+            job.getJobDataMap().put("mqttClient",mqttClient);
             //5.注册任务和定时器
             scheduler.scheduleJob(job, trigger);
 
