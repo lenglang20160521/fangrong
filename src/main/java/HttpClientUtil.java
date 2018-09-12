@@ -3,6 +3,7 @@ import DTO.Points;
 import DTO.Stations;
 import DTO.resultPoints;
 import com.alibaba.fastjson.JSON;
+import config.FangRongConfig;
 import org.apache.http.*;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.config.RequestConfig;
@@ -145,7 +146,7 @@ public class HttpClientUtil {
     public static List<Integer> getStationIds(String token) {
         String getStationsUrl = "http://www.ie-cloud.com:18686/api/v2/stations";
         Map<String, String> headers = new HashMap<String, String>();
-        headers.put("x-ie-access-key", "82505432b1f24a2a9d569addf5f5d03f");
+        headers.put("x-ie-access-key", FangRongConfig.x_ie_access_token);
         headers.put("x-ie-access-token", token);
         Stations stations = JSON.parseObject(doGet(getStationsUrl, headers), Stations.class);
         return stations.getStationIds();
@@ -179,7 +180,7 @@ public class HttpClientUtil {
     public static Points getStationPoints(Integer stationId, String token) {
         String getAnaPointsUrl = "http://www.ie-cloud.com:18686/api/v2/stations/" + stationId.toString() + "/ana";
         Map<String, String> headers = new HashMap<String, String>();
-        headers.put("x-ie-access-key", "82505432b1f24a2a9d569addf5f5d03f");
+        headers.put("x-ie-access-key", FangRongConfig.x_ie_access_token);
         headers.put("x-ie-access-token", token);
         return JSON.parseObject(doGet(getAnaPointsUrl, headers), Points.class);
     }
@@ -187,7 +188,7 @@ public class HttpClientUtil {
     public static resultPoints getResultPoints(Integer stationId, String token) {
         String queryByPointsUrl = "http://www.ie-cloud.com:18686/api/v2/hsda/stations/" + stationId.toString() + "/ana";
         Map<String, String> headers = new HashMap<String, String>();
-        headers.put("x-ie-access-key", "82505432b1f24a2a9d569addf5f5d03f");
+        headers.put("x-ie-access-key", FangRongConfig.x_ie_access_token);
         headers.put("x-ie-access-token", token);
         List<Integer> ids = getAnaPointIds(stationId, token);
         Map<String, Object> map = new HashMap<>();
@@ -201,8 +202,8 @@ public class HttpClientUtil {
     public static String getNewToken() {
         String reqBaseUrl = "http://www.ie-cloud.com:18686/api/v2/auth";
         Map<String, String> headers = new HashMap<String, String>();
-        headers.put("x-ie-access-key", "82505432b1f24a2a9d569addf5f5d03f");
-        headers.put("x-ie-access-token", "cddee9c0ac154bc88940365542c7d8d3");
+        headers.put("x-ie-access-key", FangRongConfig.x_ie_access_key);
+        headers.put("x-ie-access-token", FangRongConfig.x_ie_access_token);
 //        Map<String, Object> paramMap = null;
         String jsonStr = null;
         String result = doPost(reqBaseUrl, jsonStr, headers);

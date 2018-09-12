@@ -3,6 +3,7 @@ package DTO;
 import com.alibaba.fastjson.JSON;
 import com.google.common.collect.HashBasedTable;
 import com.google.common.collect.Table;
+import config.YuanJingConfig;
 
 import java.util.*;
 
@@ -33,7 +34,8 @@ public class resultPoints {
         Set<Long> allTimeStamps = dataTable.rowKeySet();
         for(Long onlyTimeStamps: allTimeStamps ){
             msg msg = new msg();
-            msg.setObject("1c9625ca8b802000");  //消息发送设备的mdmId
+            String object = YuanJingConfig.object;
+            msg.setObject(object);
             msg.setTimestamp(onlyTimeStamps);
             Map<String,Double> itemValueMap =  dataTable.row(onlyTimeStamps);
             msg.setItemValues(itemValueMap);
