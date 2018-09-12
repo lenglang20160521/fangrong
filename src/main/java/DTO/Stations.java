@@ -14,6 +14,7 @@ public class Stations {
     private List<DataBean> data;
 
     public List<Integer> getStationIds(){
+
         List<Integer> ids = new ArrayList<>();
         for(DataBean point: data){
             ids.add(point.getId());

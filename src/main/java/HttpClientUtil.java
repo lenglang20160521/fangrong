@@ -143,14 +143,25 @@ public class HttpClientUtil {
         return result;
     }
 
-    public static List<Integer> getStationIds(String token) {
+//    public static List<Integer> getStationIds(String token) {
+//        String getStationsUrl = "http://www.ie-cloud.com:18686/api/v2/stations";
+//        Map<String, String> headers = new HashMap<String, String>();
+//        headers.put("x-ie-access-key", FangRongConfig.x_ie_access_key);
+//        headers.put("x-ie-access-token", token);
+//        Stations stations = JSON.parseObject(doGet(getStationsUrl, headers), Stations.class);
+//        return stations.getStationIds();
+//    }
+
+    public static Stations getStations(String token){
         String getStationsUrl = "http://www.ie-cloud.com:18686/api/v2/stations";
         Map<String, String> headers = new HashMap<String, String>();
-        headers.put("x-ie-access-key", FangRongConfig.x_ie_access_token);
+        headers.put("x-ie-access-key", FangRongConfig.x_ie_access_key);
         headers.put("x-ie-access-token", token);
-        Stations stations = JSON.parseObject(doGet(getStationsUrl, headers), Stations.class);
-        return stations.getStationIds();
+        String resultJson = doGet(getStationsUrl, headers);
+//        System.out.println(resultJson);
+        return JSON.parseObject(resultJson, Stations.class);
     }
+
 
     public static List<Integer> getAnaPointIds(Integer stationId, String token) {
         Points points = getStationPoints(stationId, token);
@@ -180,7 +191,7 @@ public class HttpClientUtil {
     public static Points getStationPoints(Integer stationId, String token) {
         String getAnaPointsUrl = "http://www.ie-cloud.com:18686/api/v2/stations/" + stationId.toString() + "/ana";
         Map<String, String> headers = new HashMap<String, String>();
-        headers.put("x-ie-access-key", FangRongConfig.x_ie_access_token);
+        headers.put("x-ie-access-key", FangRongConfig.x_ie_access_key);
         headers.put("x-ie-access-token", token);
         return JSON.parseObject(doGet(getAnaPointsUrl, headers), Points.class);
     }
@@ -188,7 +199,7 @@ public class HttpClientUtil {
     public static resultPoints getResultPoints(Integer stationId, String token) {
         String queryByPointsUrl = "http://www.ie-cloud.com:18686/api/v2/hsda/stations/" + stationId.toString() + "/ana";
         Map<String, String> headers = new HashMap<String, String>();
-        headers.put("x-ie-access-key", FangRongConfig.x_ie_access_token);
+        headers.put("x-ie-access-key", FangRongConfig.x_ie_access_key);
         headers.put("x-ie-access-token", token);
         List<Integer> ids = getAnaPointIds(stationId, token);
         Map<String, Object> map = new HashMap<>();
