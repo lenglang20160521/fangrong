@@ -9,6 +9,8 @@ public class AuthInfo {
 
     private int code;
     private DataBean data;
+    private  String msg;
+    private  String req;
 
     public int getCode() {
         return code;
@@ -24,6 +26,22 @@ public class AuthInfo {
 
     public void setData(DataBean data) {
         this.data = data;
+    }
+
+    public String getMsg() {
+        return msg;
+    }
+
+    public void setMsg(String msg) {
+        this.msg = msg;
+    }
+
+    public String getReq() {
+        return req;
+    }
+
+    public void setReq(String req) {
+        this.req = req;
     }
 
     public static class DataBean {

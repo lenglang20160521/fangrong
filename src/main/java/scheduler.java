@@ -11,7 +11,6 @@ public class scheduler {
             SchedulerFactory sf = new StdSchedulerFactory();
             //2.从工厂中获取调度器实例
             Scheduler scheduler = sf.getScheduler();
-
             //任务运行的时间，SimpleSchedle类型触发器有效
             long time=  System.currentTimeMillis() + 3*1000L; //3秒后启动任务
             Date statTime = new Date(time);
@@ -34,7 +33,6 @@ public class scheduler {
             job.getJobDataMap().put("mqttClient",mqttClient);
             //5.注册任务和定时器
             scheduler.scheduleJob(job, trigger);
-
             //6.启动 调度器
             scheduler.start();
             System.out.println("启动时间 ： " + new Date());

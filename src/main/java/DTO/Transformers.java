@@ -65,6 +65,14 @@ public class Transformers {
         private int voltCode;
         private int capacity;
 
+        @Override
+        public String toString(){
+            return "id: "+String.valueOf(id)+"  "+"name: "+name+"   "+"station: "+String.valueOf(station)
+                    +"   "+"circuit: "+String.valueOf(circuit)+"   "+"voltCode: "
+                    +String.valueOf(voltCode)+"   "+"capacity: "+String.valueOf(capacity);
+        }
+//        private  Integer parentId;
+
         public int getId() {
             return id;
         }

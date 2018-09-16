@@ -1,7 +1,4 @@
-import DTO.AuthInfo;
-import DTO.Points;
-import DTO.Stations;
-import DTO.resultPoints;
+import DTO.*;
 import com.alibaba.fastjson.JSON;
 import config.FangRongConfig;
 import org.apache.http.*;
@@ -143,15 +140,8 @@ public class HttpClientUtil {
         return result;
     }
 
-//    public static List<Integer> getStationIds(String token) {
-//        String getStationsUrl = "http://www.ie-cloud.com:18686/api/v2/stations";
-//        Map<String, String> headers = new HashMap<String, String>();
-//        headers.put("x-ie-access-key", FangRongConfig.x_ie_access_key);
-//        headers.put("x-ie-access-token", token);
-//        Stations stations = JSON.parseObject(doGet(getStationsUrl, headers), Stations.class);
-//        return stations.getStationIds();
-//    }
 
+//获取权限范围内可见电站
     public static Stations getStations(String token){
         String getStationsUrl = "http://www.ie-cloud.com:18686/api/v2/stations";
         Map<String, String> headers = new HashMap<String, String>();
@@ -164,37 +154,126 @@ public class HttpClientUtil {
 
 
     public static List<Integer> getAnaPointIds(Integer stationId, String token) {
-        Points points = getStationPoints(stationId, token);
+        Points points = getStationAnaPoints(stationId, token);
         return points.getPointIds();
     }
 
     public static List<String> getAnaPointNames(Integer stationId, String token) {
-        Points points = getStationPoints(stationId, token);
+        Points points = getStationAnaPoints(stationId, token);
         return points.getPointNames();
     }
 
     public static Map<Integer, String> getIdNameMaps(Integer stationId, String token) {
-        Points points = getStationPoints(stationId, token);
+        Points points = getStationAnaPoints(stationId, token);
         return points.getIdNameMaps();
     }
 
     public static Map<Integer, String> getIdShortNameMaps(Integer stationId, String token) {
-        Points points = getStationPoints(stationId, token);
+        Points points = getStationAnaPoints(stationId, token);
         return points.getIdShortNameMaps();
     }
 
     public static Map<Integer, String> getIdAliasNameMaps(Integer stationId, String token) {
-        Points points = getStationPoints(stationId, token);
+        Points points = getStationAnaPoints(stationId, token);
         return points.getIdAliasNameMaps();
     }
 
-    public static Points getStationPoints(Integer stationId, String token) {
+//    获取电站下遥测量测点列表
+    public static Points getStationAnaPoints(Integer stationId, String token) {
         String getAnaPointsUrl = "http://www.ie-cloud.com:18686/api/v2/stations/" + stationId.toString() + "/ana";
+        return getPoints(getAnaPointsUrl,token);
+    }
+    //    获取电站下电度量测点列表
+    public static Points getStationAccPoints(Integer stationId, String token) {
+        String getAnaPointsUrl = "http://www.ie-cloud.com:18686/api/v2/stations/" + stationId.toString() + "/acc";
+        return getPoints(getAnaPointsUrl,token);
+    }
+
+    //获取电站下断路器列表
+    public  static Breakers getStationBreakers(Integer stationId, String token){
+        String getStationBreakersUrl = "http://www.ie-cloud.com:18686/api/v2/stations/" + stationId.toString() + "/breakers";
+        return getBreakers(getStationBreakersUrl,token);
+    }
+    //获取断路器下电度量测点列表
+    public static Points getBreakersAccPoints(Integer stationId, Integer beakerId,String token){
+        String getBreakersAccPointsUrl =   "http://www.ie-cloud.com:18686/api/v2/stations/" + stationId.toString() + "/breakers/"+beakerId.toString()+"/acc";
+        return getPoints(getBreakersAccPointsUrl,token);
+    }
+    //获取断路器下遥测量测点列表
+    public static Points getBreakersAnaPoints(Integer stationId, Integer beakerId,String token){
+        String getBreakersAnaPointsUrl =   "http://www.ie-cloud.com:18686/api/v2/stations/" + stationId.toString() + "/breakers/"+beakerId.toString()+"/ana";
+        return getPoints(getBreakersAnaPointsUrl,token);
+    }
+
+    //获取电站下回路列表
+    public  static Circuits getStationCircuits(Integer stationId, String token){
+        String getStationCircuitsUrl = "http://www.ie-cloud.com:18686/api/v2/stations/" + stationId.toString() + "/circuits";
+        return getCircuits(getStationCircuitsUrl,token);
+    }
+    //    获取回路下断路器列表
+    public  static Breakers getCircuitBreakers(Integer stationId, Integer circuitId, String token){
+        String getCircuitBreakersUrl = "http://www.ie-cloud.com:18686/api/v2/stations/" + stationId.toString() + "/circuits/"+circuitId.toString()+"/breakers";
+        return getBreakers(getCircuitBreakersUrl,token);
+    }
+
+//    获取回路下子回路列表
+public  static Circuits getCircuitCircuits(Integer stationId,Integer circuitId, String token){
+    String getCircuitCircuitsUrl = "http://www.ie-cloud.com:18686/api/v2/stations/" + stationId.toString() + "/circuits/"+circuitId.toString()+"/circuits";
+    return getCircuits(getCircuitCircuitsUrl,token);
+}
+//获取回路下变压器列表
+public  static Transformers getCircuitTransformers(Integer stationId,Integer circuitId, String token) {
+    String getCircuitTransformersUrl = "http://www.ie-cloud.com:18686/api/v2/stations/" + stationId.toString() + "/circuits/" + circuitId.toString() + "/transformers";
+    return getTransformers(getCircuitTransformersUrl, token);
+}
+
+//获取电站下变压器列表
+public  static Transformers getStationTransformers(Integer stationId, String token){
+    String getStationTransformersUrl = "http://www.ie-cloud.com:18686/api/v2/stations/" + stationId.toString() + "/transformers";
+    return getTransformers(getStationTransformersUrl,token);
+}
+
+//    获取变压器下电度量测点列表
+public static Points getTransformerAccPoints(Integer stationId, Integer transformerId,String token){
+    String getTransformerAccPointsUrl =   "http://www.ie-cloud.com:18686/api/v2/stations/" + stationId.toString() + "/transformers/"+transformerId.toString()+"/acc";
+    return getPoints(getTransformerAccPointsUrl,token);
+}
+
+    //    获取变压器下遥测量测点列表
+    public static Points getTransformerAnaPoints(Integer stationId, Integer transformerId,String token){
+        String getTransformerAnaPointsUrl =   "http://www.ie-cloud.com:18686/api/v2/stations/" + stationId.toString() + "/transformers/"+transformerId.toString()+"/ana";
+        return getPoints(getTransformerAnaPointsUrl,token);
+    }
+
+
+
+    public static Circuits getCircuits(String url,String token){
         Map<String, String> headers = new HashMap<String, String>();
         headers.put("x-ie-access-key", FangRongConfig.x_ie_access_key);
         headers.put("x-ie-access-token", token);
-        return JSON.parseObject(doGet(getAnaPointsUrl, headers), Points.class);
+        return JSON.parseObject(doGet(url, headers), Circuits.class);
     }
+
+    public  static Transformers getTransformers(String url,String token){
+        Map<String, String> headers = new HashMap<String, String>();
+        headers.put("x-ie-access-key", FangRongConfig.x_ie_access_key);
+        headers.put("x-ie-access-token", token);
+        return JSON.parseObject(doGet(url, headers), Transformers.class);
+    }
+    public static Breakers getBreakers(String url,String token){
+        Map<String, String> headers = new HashMap<String, String>();
+        headers.put("x-ie-access-key", FangRongConfig.x_ie_access_key);
+        headers.put("x-ie-access-token", token);
+        return JSON.parseObject(doGet(url, headers), Breakers.class);
+    }
+
+    public static Points getPoints(String url,String token){
+        Map<String, String> headers = new HashMap<String, String>();
+        headers.put("x-ie-access-key", FangRongConfig.x_ie_access_key);
+        headers.put("x-ie-access-token", token);
+        return JSON.parseObject(doGet(url, headers), Points.class);
+    }
+
 
     public static resultPoints getResultPoints(Integer stationId, String token) {
         String queryByPointsUrl = "http://www.ie-cloud.com:18686/api/v2/hsda/stations/" + stationId.toString() + "/ana";
@@ -210,6 +289,7 @@ public class HttpClientUtil {
     }
 
 
+//    申请访问token
     public static String getNewToken() {
         String reqBaseUrl = "http://www.ie-cloud.com:18686/api/v2/auth";
         Map<String, String> headers = new HashMap<String, String>();
@@ -234,6 +314,35 @@ public class HttpClientUtil {
         return res;
     }
 
+    public  static  void  main(String[] args){
+        String newToken = HttpClientUtil.getNewToken();
+        Integer stationId = 2140000003;
+        String getStationTransformersUrl = "http://www.ie-cloud.com:18686/api/v2/stations/" + stationId.toString() + "/transformers";
+        Map<String, String> headers = new HashMap<String, String>();
+        headers.put("x-ie-access-key", FangRongConfig.x_ie_access_key);
+        headers.put("x-ie-access-token", newToken);
+//        JSON.parseObject(doGet(url, headers), Transformers.class)
+        String jsonStr = doGet(getStationTransformersUrl, headers);
+//        System.out.println(jsonStr);
+        Transformers transformers = JSON.parseObject(jsonStr,Transformers.class);
+        System.out.println(transformers.getData().size());
+        List<String> a = new ArrayList<>();
+        System.out.println(a);
+//        if (transformers.getData().equals("[]")){
+//            System.out.println("dddd");
+//        }
+//        for (DTO.Transformers.DataBean transformer: transformers.getData()){
+//            if (transformer == null){
+//                System.out.println("无数据");
+//            }else {
+//                System.out.println("????");
+//            }
+//        }
+//        Transformers transformers = HttpClientUtil.getStationTransformers(stationId,newToken);
+//        for (DTO.Transformers.DataBean transformer: transformers.getData()){
+//            System.out.println(transformer.toString());
+//        }
+    }
 }
 
 

@@ -39,7 +39,6 @@ public class SendMsg implements Job {
 //        获取权限内的所有站
         Stations stations = HttpClientUtil.getStations(newToken);
         List<Integer> stationsIds = stations.getStationIds();
-//        MqttClient mqttClient = MqttClientUtil.getMqttClient();
         for (Integer stationId : stationsIds) {
 //            System.out.println("-------------------" + stationId.toString() + "--------------------------------");
             Map<Integer, String> anaPointIdShortNameMaps = HttpClientUtil.getIdShortNameMaps(stationId, newToken);

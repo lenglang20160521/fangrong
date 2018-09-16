@@ -12,6 +12,9 @@ public class Stations {
 
     private int code;
     private List<DataBean> data;
+    private  String msg;
+    private  String req;
+
 
     public List<Integer> getStationIds(){
 
@@ -21,6 +24,7 @@ public class Stations {
         }
         return  ids;
     }
+
 
     public int getCode() {
         return code;
@@ -38,6 +42,22 @@ public class Stations {
         this.data = data;
     }
 
+    public String getMsg() {
+        return msg;
+    }
+
+    public void setMsg(String msg) {
+        this.msg = msg;
+    }
+
+    public String getReq() {
+        return req;
+    }
+
+    public void setReq(String req) {
+        this.req = req;
+    }
+
     public static class DataBean {
         /**
          * id : 2140000001
@@ -51,6 +71,48 @@ public class Stations {
         private int voltCode;
         private int transformerNum;
         private int transformerCapacity;
+        private  String voltCodeText;
+
+        private List<DTO.Circuits.DataBean> circuits;
+
+        public void  addCircuits(DTO.Circuits.DataBean circuit){
+            if (this.circuits == null){
+                this.circuits = new ArrayList<>();
+                this.circuits.add(circuit);
+            }else {
+                this.circuits.add(circuit);
+            }
+        }
+
+
+        @Override
+        public String toString(){
+            return "id: "+String.valueOf(id)+"  "+"name: "+name+"   "+"voltCode: "+String.valueOf(voltCode)
+                    +"   "+"transformerNum: "+String.valueOf(transformerNum)+"   "+"transformerCapacity: "
+                    +String.valueOf(transformerCapacity)+"   "+"voltCodeText: "+voltCodeText;
+        }
+
+
+        @Override
+        public  boolean equals(Object obj){
+            if (obj instanceof DataBean ) {
+                DataBean station = (DataBean) obj;
+                boolean is = true;
+                if (id != station.getId()){
+                    is = false;
+                }
+                return is;
+            }
+            return false;
+        }
+
+        public List<Circuits.DataBean> getCircuits() {
+            return circuits;
+        }
+
+        public void setCircuits(List<Circuits.DataBean> circuits) {
+            this.circuits = circuits;
+        }
 
         public int getId() {
             return id;
@@ -91,5 +153,13 @@ public class Stations {
         public void setTransformerCapacity(int transformerCapacity) {
             this.transformerCapacity = transformerCapacity;
         }
+        public String getVoltCodeText() {
+            return voltCodeText;
+        }
+
+        public void setVoltCodeText(String voltCodeText) {
+            this.voltCodeText = voltCodeText;
+        }
+
     }
 }

@@ -18,6 +18,7 @@ public class Points {
     private String msg;
     private String req;
     private List<DataBean> data;
+    
     private  Map<Integer,String> idNameMaps;
 
 
@@ -114,6 +115,13 @@ public class Points {
         private int interval;
         private int station;
 
+        @Override
+        public  String toString(){
+            return "id: "+String.valueOf(id)+"  "+"name: "+name+"   "+"objType: "+String.valueOf(objType)
+                    +"   "+"objId: "+String.valueOf(objId)+"   "+"measure: "
+                    +String.valueOf(measure)+"   "+"interval: "+String.valueOf(interval)
+                    +"   "+"station: "+String.valueOf(station);
+        }
         private static  Map<Integer,String> measureNameMap = new HashMap<>();
         private static  Map<Integer,String> measureShortNameMap = new HashMap<>();
         private static  Map<Integer,String> measureAliasNameMap = new HashMap<>();

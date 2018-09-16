@@ -16,6 +16,7 @@ public class Breakers {
     private String req;
     private List<DataBean> data;
 
+
     public int getCode() {
         return code;
     }
@@ -62,7 +63,13 @@ public class Breakers {
         private int station;
         private int circuit;
         private int voltCode;
+//        private  Integer parentId;
 
+        @Override
+        public  String toString(){
+            return "id: "+String.valueOf(id)+"  "+"name: "+name+"   "+"voltCode: "+String.valueOf(voltCode)
+                    +"   "+"station: "+String.valueOf(station)+"   "+"circuit: "+String.valueOf(circuit);
+        }
         public int getId() {
             return id;
         }

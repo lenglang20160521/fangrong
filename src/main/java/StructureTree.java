@@ -1,5 +1,8 @@
+import com.alibaba.fastjson.JSON;
+
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Vector;
 
 public class StructureTree<E> {
 
@@ -42,11 +45,36 @@ public class StructureTree<E> {
 
     // 返回指定节点（非叶子节点）的所有子节点
     public List<Node<E>> children(Node parent){
-        List<Node<E>> list = new ArrayList<Node<E>>();
+        List<Node<E>> list = new ArrayList<>();
         for (int i = 0; i < treeSize; i++) {
             // 如果当前节点的父节点的位置等于parent节点的位置
             if (nodes[i] != null && nodes[i].parent == pos(parent)){
                 list.add(nodes[i]);
+            }
+        }
+        return list;
+    }
+    //返回所有节点列表，包括根节点
+    public List<Node<E>> getAllNodes(){
+        List<Node<E>> list = new ArrayList<>();
+        for (int i = 0; i < treeSize; i++) {
+            // 如果当前节点的父节点的位置等于parent节点的位置
+            if (nodes[i] != null){
+                list.add(nodes[i]);
+            }
+        }
+        return list;
+    }
+
+//返回所有叶子节点
+    public List<Node<E>> getAllLeafNode(){
+        List<Node<E>> list = new ArrayList<>();
+        for (int i = 0; i < treeSize; i++){
+            if(nodes[i] != null) {
+                List<Node<E>> aa = children(nodes[i]);
+                if (aa.size() == 0) {
+                    list.add(nodes[i]);
+                }
             }
         }
         return list;
@@ -73,6 +101,32 @@ public class StructureTree<E> {
         }
         return max;
     }
+
+    //返回给定深度层级上的节点
+    public  List<Node<E>> getLayerNodes(int x){
+        int treeDeep = deep();
+        List<Node<E>> layerNodes = new ArrayList<>();
+        if(x > treeDeep){
+            System.out.println("查询深度 "+String.valueOf(x)+" 大于树本身的深度 "+String.valueOf(treeDeep)+"。");
+            return layerNodes;
+        }
+        for (int i = 0; i < treeSize && nodes[i] != null; i++){
+            // 初始化本节点的深度
+            int def = 1;
+            // m 记录当前节点的父节点的位置
+            int m = nodes[i].parent;
+            // 如果其父节点存在
+            while (m != -1 && nodes[m] != null){
+                // 向上继续搜索父节点
+                m = nodes[m].parent;
+                def++;
+            }
+            if (x == def){
+                layerNodes.add(nodes[i]);
+            }
+        }
+        return layerNodes;
+    }
     // 返回包含指定值的节点号
     public int pos(Node node) {
          for (int i = 0; i < treeSize; i++) {
@@ -88,7 +142,7 @@ public class StructureTree<E> {
     public  Node getObjectNode(Object data){
         Node node = null;
         for (int i = 0; i < treeSize; i++){
-            if (nodes[i].data == data){
+            if (nodes[i].data.equals(data)){
                 node = nodes[i];
                 break;
             }
@@ -108,6 +162,65 @@ public class StructureTree<E> {
             }
         }
     }
+// 返回树上面的所有对象
+    public  List<Object> getObjectsList(){
+        List<Object> objectList = new ArrayList<>();
+        for (int i = 0; i < treeSize; i++){
+            Node node = nodes[i];
+            if (node != null){
+                objectList.add(node.data);
+            }
+        }
+       return objectList;
+    }
+
+    //打印树的路径
+    public void printPath(){
+        if (deep() > 1) {
+            List<Node<E>> allLeafNode = getAllLeafNode();
+            for (Node node : allLeafNode) {
+                List<Node<E>> pathList = new ArrayList<>();
+                pathList.add(0,node);
+                Node parentNode = nodes[node.parent];
+                pathList.add(1,parentNode);
+                Integer n = 2;
+                while (parentNode.parent >= 0) {
+                    parentNode = nodes[parentNode.parent];
+                    pathList.add(n,parentNode);
+                    n++;
+                }
+
+                for (int m = pathList.size()-1; m >= 0;m-- ){
+                    if (m == 0){
+                        System.out.println(pathList.get(m).data.toString());
+                    }else {
+                        System.out.println(pathList.get(m).data.toString());
+                        System.out.println("|");
+                        System.out.println("|");
+                    }
+                }
+                System.out.println("*****************************************");
+            }
+        }else {
+            System.out.println(nodes[0].toString());
+        }
+    }
+
+//    public String toJson(){
+//        FangRongTree frTree = new FangRongTree();
+//        frTree.setId(000);
+//        frTree.setName("fangrong");
+//        for (int m = 1; m < deep(); m++){
+//            List<Node<E>> layerNodes = getLayerNodes(m);
+//            for (Node node : layerNodes){
+//                if (node instanceof DTO.Stations.DataBean){
+//
+//                }
+//            }
+//        }
+//        String jsonStr = JSON.toJSONString(children(nodes[0]));
+//        return jsonStr;
+//    }
 
     public  static  class  Node<T>{
         T data;
