@@ -71,8 +71,8 @@ public class StructureTree<E> {
         List<Node<E>> list = new ArrayList<>();
         for (int i = 0; i < treeSize; i++){
             if(nodes[i] != null) {
-                List<Node<E>> aa = children(nodes[i]);
-                if (aa.size() == 0) {
+                List<Node<E>> childNodeList = children(nodes[i]);
+                if (childNodeList.size() == 0) {
                     list.add(nodes[i]);
                 }
             }
@@ -110,6 +110,7 @@ public class StructureTree<E> {
             System.out.println("查询深度 "+String.valueOf(x)+" 大于树本身的深度 "+String.valueOf(treeDeep)+"。");
             return layerNodes;
         }
+
         for (int i = 0; i < treeSize && nodes[i] != null; i++){
             // 初始化本节点的深度
             int def = 1;
@@ -162,6 +163,7 @@ public class StructureTree<E> {
             }
         }
     }
+
 // 返回树上面的所有对象
     public  List<Object> getObjectsList(){
         List<Object> objectList = new ArrayList<>();
@@ -242,8 +244,5 @@ public class StructureTree<E> {
             return  data.toString();
         }
 
-//        public String toString(){
-//            return "StructureTree$Node[data=" + data + ", parent=" + parent + "]";
-//        }
     }
 }

@@ -1,5 +1,6 @@
 import DTO.Stations;
 import DTO.resultPoints;
+import component.Station;
 import config.YuanJingConfig;
 import org.eclipse.paho.client.mqttv3.*;
 import org.eclipse.paho.client.mqttv3.persist.MemoryPersistence;
@@ -38,8 +39,8 @@ public class SendMsg implements Job {
         String newToken = HttpClientUtil.getNewToken();
 //        获取权限内的所有站
         Stations stations = HttpClientUtil.getStations(newToken);
-        List<Integer> stationsIds = stations.getStationIds();
-        for (Integer stationId : stationsIds) {
+        for (Station station : stations.getStations()) {
+            Integer stationId = station.getId();
 //            System.out.println("-------------------" + stationId.toString() + "--------------------------------");
             Map<Integer, String> anaPointIdShortNameMaps = HttpClientUtil.getIdShortNameMaps(stationId, newToken);
             resultPoints resultPoints = HttpClientUtil.getResultPoints(stationId, newToken);

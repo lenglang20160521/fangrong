@@ -1,5 +1,8 @@
 package DTO;
 
+import com.alibaba.fastjson.annotation.JSONField;
+import component.Breaker;
+
 import java.util.List;
 
 public class Breakers {
@@ -14,8 +17,18 @@ public class Breakers {
     private int code;
     private String msg;
     private String req;
-    private List<DataBean> data;
+    private  List<Breaker> breakers;
 
+
+    @JSONField(name = "data")
+    public List<Breaker> getBreakers() {
+        return breakers;
+    }
+
+    @JSONField(name = "data")
+    public void setBreakers(List<Breaker> breakers) {
+        this.breakers = breakers;
+    }
 
     public int getCode() {
         return code;
@@ -41,73 +54,5 @@ public class Breakers {
         this.req = req;
     }
 
-    public List<DataBean> getData() {
-        return data;
-    }
 
-    public void setData(List<DataBean> data) {
-        this.data = data;
-    }
-
-    public static class DataBean {
-        /**
-         * id : 0
-         * name : string
-         * station : 0
-         * circuit : 0
-         * voltCode : 0
-         */
-
-        private int id;
-        private String name;
-        private int station;
-        private int circuit;
-        private int voltCode;
-//        private  Integer parentId;
-
-        @Override
-        public  String toString(){
-            return "id: "+String.valueOf(id)+"  "+"name: "+name+"   "+"voltCode: "+String.valueOf(voltCode)
-                    +"   "+"station: "+String.valueOf(station)+"   "+"circuit: "+String.valueOf(circuit);
-        }
-        public int getId() {
-            return id;
-        }
-
-        public void setId(int id) {
-            this.id = id;
-        }
-
-        public String getName() {
-            return name;
-        }
-
-        public void setName(String name) {
-            this.name = name;
-        }
-
-        public int getStation() {
-            return station;
-        }
-
-        public void setStation(int station) {
-            this.station = station;
-        }
-
-        public int getCircuit() {
-            return circuit;
-        }
-
-        public void setCircuit(int circuit) {
-            this.circuit = circuit;
-        }
-
-        public int getVoltCode() {
-            return voltCode;
-        }
-
-        public void setVoltCode(int voltCode) {
-            this.voltCode = voltCode;
-        }
-    }
 }

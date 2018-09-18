@@ -325,7 +325,7 @@ public static Points getTransformerAccPoints(Integer stationId, Integer transfor
         String jsonStr = doGet(getStationTransformersUrl, headers);
 //        System.out.println(jsonStr);
         Transformers transformers = JSON.parseObject(jsonStr,Transformers.class);
-        System.out.println(transformers.getData().size());
+        System.out.println(transformers.getTransformers().size());
         List<String> a = new ArrayList<>();
         System.out.println(a);
 //        if (transformers.getData().equals("[]")){

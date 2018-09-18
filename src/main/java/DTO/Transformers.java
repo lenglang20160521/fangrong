@@ -1,6 +1,10 @@
 package DTO;
 
+import com.alibaba.fastjson.annotation.JSONField;
+import component.Transformer;
+
 import java.util.List;
+
 
 public class Transformers {
 
@@ -14,7 +18,17 @@ public class Transformers {
     private int code;
     private String msg;
     private String req;
-    private List<DataBean> data;
+    private List<Transformer> transformers;
+
+    @JSONField(name = "data")
+    public List<Transformer> getTransformers() {
+        return transformers;
+    }
+
+    @JSONField(name = "data")
+    public void setTransformers(List<Transformer> transformers) {
+        this.transformers = transformers;
+    }
 
     public int getCode() {
         return code;
@@ -40,13 +54,6 @@ public class Transformers {
         this.req = req;
     }
 
-    public List<DataBean> getData() {
-        return data;
-    }
-
-    public void setData(List<DataBean> data) {
-        this.data = data;
-    }
 
     public static class DataBean {
         /**

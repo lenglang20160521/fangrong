@@ -8,4 +8,6 @@ public class TestHttpClientUtil {
         String newToken = HttpClientUtil.getNewToken();
         Assert.assertNotNull(newToken);
     }
+
+
 }
